@@ -5,14 +5,14 @@ class Address implements Action
 
     private $id;
     private $city;
-    private $postal;
+    private $postalcode;
     private $streetname;
     private $streetnum;
 
     public function __construct($city, $postal, $streetname, $streetnum)
     {
         $this->city = $city;
-        $this->postal = $postal;
+        $this->postalcode = $postal;
         $this->streetname = $streetname;
         $this->streetnum = $streetnum;
     }
@@ -22,6 +22,7 @@ class Address implements Action
     public function getId()
     {
         return $this->id;
+        // TEST
     }
 
     public function getCity()
