@@ -1,5 +1,4 @@
 <?php
-
 class Size implements Action
 {
     private $id;
@@ -8,77 +7,51 @@ class Size implements Action
     /**
      * @var Database
      */
-    private $db;
-
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * @param mixed $size
-     */
-    public function setSize($size)
-    {
+    public static $db;
+    public function __construct($size, $price) {
         $this->size = $size;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param mixed $price
-     */
-    public function setPrice($price)
-    {
         $this->price = $price;
     }
-
-
-
+    public function getId(){
+        return $this->id;
+    }
+    public function getSize(){
+        return $this->size;
+    }
+    public function setSize($size){
+        $this->size = $size;
+        return $this;
+    }
+    public function getPrice(){
+        return $this->price;
+    }
+    public function setPrice($price){
+        $this->price = $price;
+        return $this;
+    }
     public function save()
     {
         // TODO: Implement save() method.
     }
-
     public function update()
     {
         // TODO: Implement update() method.
     }
-
     public function delete()
     {
         // TODO: Implement delete() method.
     }
-
     public static function load($id = null)
     {
         // TODO: Implement load() method.
     }
-
     public static function loadAll()
     {
-        // TODO: Implement loadAll() method.
+        self::$db->query("SELECT * FROM Size");
+        return self::$db->resultSet();
     }
-
     public static function setDb(Database $db)
     {
-        // TODO: Implement setDb() method.
+        self::$db = $db;
     }
 }
