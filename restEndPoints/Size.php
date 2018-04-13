@@ -1,7 +1,7 @@
 <?php
+Size::setDb($db);
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    Size::setDb($db);
-    $sizes = Size::loadAll(isset($pathId) ? $pathId : null);
+    $sizes = Size::loadAll();
     $tmpSizes = [];
     foreach ($sizes as $k => $size) {
         $tmpSizes[$k]['id'] = $size['id'];
@@ -10,22 +10,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     $response = $tmpSizes;
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $author = new Author($conn);
-    $author->setName($_POST['name']);
-    $author->setSurname($_POST['surname']);
-    $author->save();
-    $response = ['success' => [json_decode(json_encode($author), true)]];
+    $size = new Size(null, $_POST['size'], $_POST['price']);
+    $size->save();
+    $response = ['success' => [json_decode(json_encode($size), true)]];
 } elseif ($_SERVER['REQUEST_METHOD'] == 'PATCH') {
     parse_str(file_get_contents("php://input"), $patchVars);
-    $authorToEdit = Author::loadAll($conn, $pathId)[0];
-    $authorToEdit->setName($patchVars['name']);
-    $authorToEdit->setSurname($patchVars['surname']);
-    $authorToEdit->save();
-    $response = ['success' => [json_decode(json_encode($authorToEdit), true)]];
+    $size = Size::load($patchVars['id']);
+    $size->setSize($patchVars['size']);
+    $size->setPrice($patchVars['price']);
+    $size->update();
+    $response = ['success' => [json_decode(json_encode($size), true)]];
 } elseif ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
     parse_str(file_get_contents("php://input"), $deleteVars);
-    $authorToDelete = Author::loadAll($conn, $pathId)[0];
-    $authorToDelete->delete();
+    $size = Size::load($deleteVars['id']);
+    $size->delete();
     $response = ['success' => 'deleted'];
 } else {
     $response = ['error' => 'Wrong request method'];

@@ -8,7 +8,8 @@ class Size implements Action
      * @var Database
      */
     public static $db;
-    public function __construct($size, $price) {
+    public function __construct($id = null, $size, $price) {
+        $this->id = $id;
         $this->size = $size;
         $this->price = $price;
     }
@@ -31,19 +32,34 @@ class Size implements Action
     }
     public function save()
     {
-        // TODO: Implement save() method.
+        self::$db->query("INSERT INTO Size SET size=:size, price=:price");
+        self::$db->bind(':size', $this->getSize(), PDO::PARAM_STR);
+        self::$db->bind(':price', $this->getPrice(), PDO::PARAM_STR);
+        self::$db->execute();
+        return $this;
     }
     public function update()
     {
-        // TODO: Implement update() method.
+        self::$db->query("UPDATE Size SET size=:size, price=:price WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->bind(':size', $this->getSize(), PDO::PARAM_STR);
+        self::$db->bind(':price', $this->getPrice(), PDO::PARAM_STR);
+        self::$db->execute();
+        return $this;
     }
     public function delete()
     {
-        // TODO: Implement delete() method.
+        self::$db->query("DELETE FROM Size WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
     public static function load($id = null)
     {
-        // TODO: Implement load() method.
+        self::$db->query("SELECT * FROM Size WHERE id=:id");
+        self::$db->bind(':id', $id, PDO::PARAM_INT);
+        $row = self::$db->single();
+        return new Size($row['id'], $row['size'], $row['price']);
     }
     public static function loadAll()
     {
