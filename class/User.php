@@ -6,7 +6,21 @@ class User implements Action
     private $name;
     private $surname;
     private $credits;
-    private $address;
+    private $address_id;
+
+    /**
+     * @var Database
+     */
+    public static $db;
+
+    public function __construct($id = null, $name, $surname, $credits, $address)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->surname = $surname;
+        $this->credits = $credits;
+        $this->address_id = $address;
+    }
 
     /**
      * @return mixed
@@ -67,47 +81,67 @@ class User implements Action
     /**
      * @return mixed
      */
-    public function getAddress()
+    public function getAddressId()
     {
-        return $this->address;
+        return $this->address_id;
     }
 
     /**
-     * @param mixed $address
+     * @param mixed $address_id
      */
-    public function setAddress($address)
+    public function setAddressId($address_id)
     {
-        $this->address = $address;
+        $this->address_id = $address_id;
     }
 
 
     public function save()
     {
-        // TODO: Implement save() method.
+        self::$db->query("INSERT INTO User SET name=:name, surname=:surname, credits=:credits, address_id=:address_id");
+        self::$db->bind(':name', $this->getName(), PDO::PARAM_STR);
+        self::$db->bind(':surname', $this->getSurname(), PDO::PARAM_STR);
+        self::$db->bind(':credits', $this->getCredits(), PDO::PARAM_STR);
+        self::$db->bind(':address_id', $this->getAddressId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        self::$db->query("UPDATE User SET name=:name, surname=:surname, credits=:credits, address_id=:address_id WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->bind(':name', $this->getName(), PDO::PARAM_STR);
+        self::$db->bind(':surname', $this->getSurname(), PDO::PARAM_STR);
+        self::$db->bind(':credits', $this->getCredits(), PDO::PARAM_STR);
+        self::$db->bind(':address_id', $this->getAddressId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function delete()
     {
-        // TODO: Implement delete() method.
+        self::$db->query("DELETE FROM User WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public static function load($id = null)
     {
-        // TODO: Implement load() method.
+        self::$db->query("SELECT * FROM User WHERE id=:id");
+        self::$db->bind(':id', $id, PDO::PARAM_INT);
+        $row = self::$db->single();
+        return new User($row['id'], $row['name'], $row['surname'], $row['credits'], $row['address_id']);
     }
 
     public static function loadAll()
     {
-        // TODO: Implement loadAll() method.
+        self::$db->query("SELECT * FROM User");
+        return self::$db->resultSet();
     }
 
     public static function setDb(Database $db)
     {
-        // TODO: Implement setDb() method.
+        self::$db = $db;
     }
 }
