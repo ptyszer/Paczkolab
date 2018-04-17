@@ -5,16 +5,21 @@ class Address implements Action
 
     private $id;
     private $city;
-    private $postalcode;
-    private $streetname;
-    private $streetnum;
+    private $code;
+    private $street;
+    private $flat;
 
-    public function __construct($city, $postal, $streetname, $streetnum)
+    /**
+     * @var Database
+     */
+    public static $db;
+
+    public function __construct($id=null, $city, $code, $street, $flat)
     {
         $this->city = $city;
-        $this->postalcode = $postal;
-        $this->streetname = $streetname;
-        $this->streetnum = $streetnum;
+        $this->code = $code;
+        $this->street = $street;
+        $this->flat = $flat;
     }
 
     // Getters & Setters
@@ -22,7 +27,6 @@ class Address implements Action
     public function getId()
     {
         return $this->id;
-        // TEST
     }
 
     public function getCity()
@@ -35,66 +39,86 @@ class Address implements Action
         $this->city = $city;
     }
 
-    public function getPostal()
+    public function getCode()
     {
-        return $this->postal;
+        return $this->code;
     }
 
-    public function setPostal($postal)
+    public function setCode($code)
     {
-        $this->postal = $postal;
+        $this->code = $code;
     }
 
-    public function getStreetname()
+    public function getStreet()
     {
-        return $this->streetname;
+        return $this->street;
     }
 
-    public function setStreetname($streetname)
+    public function setStreet($street)
     {
-        $this->streetname = $streetname;
+        $this->street = $street;
     }
 
-    public function getStreetnum()
+    public function getFlat()
     {
-        return $this->streetnum;
+        return $this->flat;
     }
 
-    public function setStreetnum($streetnum)
+    public function setFlat($flat)
     {
-        $this->streetnum = $streetnum;
+        $this->flat = $flat;
     }
 
     // Methods
 
     public function save()
     {
-        // TODO: Implement save() method.
+        self::$db->query("INSERT INTO Address SET city=:city, code=:code, street=:street, flat=:flat");
+        self::$db->bind(':city', $this->getCity(), PDO::PARAM_STR);
+        self::$db->bind(':code', $this->getCode(), PDO::PARAM_STR);
+        self::$db->bind(':street', $this->getStreet(), PDO::PARAM_STR);
+        self::$db->bind(':flat', $this->getFlat(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        self::$db->query("UPDATE Address SET city=:city, code=:code, street=:street, flat=:flat WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->bind(':city', $this->getCity(), PDO::PARAM_STR);
+        self::$db->bind(':code', $this->getCode(), PDO::PARAM_STR);
+        self::$db->bind(':street', $this->getStreet(), PDO::PARAM_STR);
+        self::$db->bind(':flat', $this->getFlat(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function delete()
     {
-        // TODO: Implement delete() method.
+        self::$db->query("DELETE FROM Address WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public static function load($id = null)
     {
-        // TODO: Implement load() method.
+        self::$db->query("SELECT * FROM Address WHERE id=:id");
+        self::$db->bind(':id', $id, PDO::PARAM_INT);
+        $row = self::$db->single();
+        return new Address($row['id'], $row['city'], $row['code'], $row['street'], $row['flat']);
     }
 
     public static function loadAll()
     {
-        // TODO: Implement loadAll() method.
+        self::$db->query("SELECT * FROM Address");
+        return self::$db->resultSet();
     }
 
     public static function setDb(Database $db)
     {
-        // TODO: Implement setDb() method.
+        self::$db = $db;
     }
 
 }
