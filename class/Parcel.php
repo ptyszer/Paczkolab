@@ -8,6 +8,19 @@ class Parcel implements Action
     private $address;
 
     /**
+     * @var Database
+     */
+    public static $db;
+
+    public function __construct($id = null, $sender, $size, $address)
+    {
+        $this->id = $id;
+        $this->sender = $sender;
+        $this->size = $size;
+        $this->address = $address;
+    }
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -66,31 +79,49 @@ class Parcel implements Action
 
     public function save()
     {
-        // TODO: Implement save() method.
+        self::$db->query("INSERT INTO Parcel SET sender_id=:sender_id, size_id=:size_id, address_id=:address_id");
+        self::$db->bind(':sender_id', $this->getSender(), PDO::PARAM_INT);
+        self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
+        self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function update()
     {
-        // TODO: Implement update() method.
+        self::$db->query("UPDATE Parcel SET sender_id=:sender_id, size_id=:size_id, address_id=:address_id WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->bind(':sender_id', $this->getSender(), PDO::PARAM_INT);
+        self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
+        self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public function delete()
     {
-        // TODO: Implement delete() method.
+        self::$db->query("DELETE FROM Parcel WHERE id=:id");
+        self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
+        self::$db->execute();
+        return $this;
     }
 
     public static function load($id = null)
     {
-        // TODO: Implement load() method.
+        self::$db->query("SELECT * FROM Parcel WHERE id=:id");
+        self::$db->bind(':id', $id, PDO::PARAM_INT);
+        $row = self::$db->single();
+        return new Parcel($row['id'], $row['sender'], $row['size'], $row['address']);
     }
 
     public static function loadAll()
     {
-        // TODO: Implement loadAll() method.
+        self::$db->query("SELECT * FROM Parcel");
+        return self::$db->resultSet();
     }
 
     public static function setDb(Database $db)
     {
-        // TODO: Implement setDb() method.
+        self::$db = $db;
     }
 }
