@@ -31,9 +31,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `Address` (
   `id` int(11) NOT NULL,
   `city` text NOT NULL,
-  `postalcode` varchar(255) NOT NULL,
-  `streetname` text NOT NULL,
-  `streetnum` int(11) NOT NULL
+  `code` varchar(255) NOT NULL,
+  `street` text NOT NULL,
+  `flat` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -44,9 +44,9 @@ CREATE TABLE `Address` (
 
 CREATE TABLE `Parcel` (
   `id` int(11) NOT NULL,
-  `sender` int(11) NOT NULL,
-  `size` int(11) NOT NULL,
-  `address-id` int(11) NOT NULL
+  `sender_id` int(11) NOT NULL,
+  `size_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -90,9 +90,9 @@ ALTER TABLE `Address`
 --
 ALTER TABLE `Parcel`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `Parcel_User_id_fk` (`sender`),
-  ADD KEY `Parcel_Size_size_fkl` (`size`),
-  ADD KEY `Parcel_Address_id_fk` (`address-id`);
+  ADD KEY `Parcel_User_id_fk` (`sender_id`),
+  ADD KEY `Parcel_Size_size_fkl` (`size_id`),
+  ADD KEY `Parcel_Address_id_fk` (`address_id`);
 
 --
 -- Indexes for table `Size`
@@ -140,9 +140,9 @@ ALTER TABLE `User`
 -- Ograniczenia dla tabeli `Parcel`
 --
 ALTER TABLE `Parcel`
-  ADD CONSTRAINT `Parcel_Address_id_fk` FOREIGN KEY (`address-id`) REFERENCES `Address` (`id`),
-  ADD CONSTRAINT `Parcel_Size_size_fkl` FOREIGN KEY (`size`) REFERENCES `Size` (`id`),
-  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`sender`) REFERENCES `User` (`id`);
+  ADD CONSTRAINT `Parcel_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`),
+  ADD CONSTRAINT `Parcel_Size_size_fkl` FOREIGN KEY (`size_id`) REFERENCES `Size` (`id`),
+  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `User` (`id`);
 
 --
 -- Ograniczenia dla tabeli `User`
