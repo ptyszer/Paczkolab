@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <Size id="1" size="M" price="8"/>
+    <Size id="2" size="L" price="10"/>
+</dataset>
