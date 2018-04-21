@@ -57,8 +57,8 @@ CREATE TABLE `Parcel` (
 
 CREATE TABLE `Size` (
   `id` int(11) NOT NULL,
-  `size` int(11) NOT NULL,
-  `price` int(11) NOT NULL
+  `size` varchar(11) NOT NULL,
+  `price` float(11, 2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
