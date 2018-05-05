@@ -2,4 +2,12 @@
 <dataset>
     <Size id="1" size="M" price="8"/>
     <Size id="2" size="L" price="10"/>
+    <Address id="1" city="Wrocław" code="52-314" street="Ślężna" flat="12"/>
+    <Address id="2" city="Warszawa" code="00-001" street="Wiejska" flat="5"/>
+    <Address id="3" city="Katowice" code="00-120" street="Ceglana" flat="8"/>
+    <User id="1" name="Jan" surname="Kowalski" credits="200" address_id="2"/>
+    <User id="2" name="Marian" surname="Nowak" credits="50" address_id="1"/>
+    <User id="3" name="Janina" surname="Nowakowska" credits="500" address_id="3"/>
+    <Parcel id="1" sender_id="3" size_id="2" address_id="1"/>
+    <Parcel id="2" sender_id="1" size_id="2" address_id="2"/>
 </dataset>

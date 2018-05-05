@@ -29,7 +29,9 @@ class SizeTest extends TestCase
         $db = new DBmysql($this->getConnection()->getConnection());
         Size::setDb($db);
         $size = new Size(null, 'XXL', 15);
-        $this->assertInstanceOf('Size', $size->save());
+        $savedSize = $size->save();
+        $this->assertInstanceOf('Size', $savedSize);
+        $this->assertEquals('XXL', $savedSize->getSize());
     }
 
     public function testUpdateSize()
@@ -37,9 +39,11 @@ class SizeTest extends TestCase
         $db = new DBmysql($this->getConnection()->getConnection());
         Size::setDb($db);
         $size = Size::load(1);
-        $size->setSize('XXXL');
+        $size->setSize('XS');
         $size->setPrice(100);
-        $this->assertInstanceOf('Size', $size->update());
+        $updatedSize = $size->update();
+        $this->assertInstanceOf('Size', $updatedSize);
+        $this->assertEquals('XS', $updatedSize->getSize());
     }
 
     public function testDeleteSize()
