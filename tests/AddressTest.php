@@ -50,7 +50,7 @@ class AddressTest extends TestCase
         $this->assertEquals('Sopot', $savedAddress->getCity());
     }
 
-    public function testUpdateAddress() //todo test fail
+    public function testUpdateAddress()
     {
         $db = new DBmysql($this->getConnection()->getConnection());
         Address::setDb($db);
@@ -64,7 +64,7 @@ class AddressTest extends TestCase
         $this->assertEquals('Gdańsk', $updatedAddress->getCity());
     }
 
-    public function testDeleteAddress()  //todo test fail
+    public function testDeleteAddress()
     {
         $db = new DBmysql($this->getConnection()->getConnection());
         Address::setDb($db);

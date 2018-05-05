@@ -64,7 +64,7 @@ class UserTest extends TestCase
         $this->assertEquals('Zygmunt', $updatedUser->getName());
     }
 
-    public function testDeleteUser() //todo test error
+    public function testDeleteUser()
     {
         $db = new DBmysql($this->getConnection()->getConnection());
         User::setDb($db);

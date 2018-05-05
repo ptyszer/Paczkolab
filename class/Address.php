@@ -18,6 +18,7 @@ class Address implements Action
 
     public function __construct($id=null, $city, $code, $street, $flat)
     {
+        $this->id = $id;
         $this->city = $city;
         $this->code = $code;
         $this->street = $street;
@@ -115,7 +116,7 @@ class Address implements Action
             return true;
         }
 
-        return null;
+        return false;
     }
 
     public static function load($id = null)

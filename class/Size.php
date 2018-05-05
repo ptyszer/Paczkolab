@@ -89,7 +89,6 @@ class Size implements Action
     public static function loadAll()
     {
         self::$db->query("SELECT * FROM Size");
-        $result = self::$db->resultSet();
         return self::$db->resultSet();
     }
     public static function setDb(Database $db)
