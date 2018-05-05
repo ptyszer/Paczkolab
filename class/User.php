@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__.'/interface/Action.php';
+
 class User implements Action
 {
     private $id;
@@ -103,7 +105,12 @@ class User implements Action
         self::$db->bind(':credits', $this->getCredits(), PDO::PARAM_STR);
         self::$db->bind(':address_id', $this->getAddressId(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return new User(self::$db->lastInsertId(), $this->getName(), $this->getSurname(), $this->getCredits(), $this->getAddressId());
+        }
+
+        return null;
     }
 
     public function update()
@@ -115,7 +122,12 @@ class User implements Action
         self::$db->bind(':credits', $this->getCredits(), PDO::PARAM_STR);
         self::$db->bind(':address_id', $this->getAddressId(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return $this;
+        }
+
+        return null;
     }
 
     public function delete()
@@ -123,7 +135,11 @@ class User implements Action
         self::$db->query("DELETE FROM User WHERE id=:id");
         self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return true;
+        }
+        return false;
     }
 
     public static function load($id = null)
@@ -131,7 +147,11 @@ class User implements Action
         self::$db->query("SELECT * FROM User WHERE id=:id");
         self::$db->bind(':id', $id, PDO::PARAM_INT);
         $row = self::$db->single();
-        return new User($row['id'], $row['name'], $row['surname'], $row['credits'], $row['address_id']);
+
+        if (self::$db->rowCount() >= 1) {
+            return new User($row['id'], $row['name'], $row['surname'], $row['credits'], $row['address_id']);
+        }
+        return null;
     }
 
     public static function loadAll()

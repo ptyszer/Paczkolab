@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__.'/interface/Action.php';
+
 class Address implements Action
 {
 
@@ -79,7 +81,11 @@ class Address implements Action
         self::$db->bind(':street', $this->getStreet(), PDO::PARAM_STR);
         self::$db->bind(':flat', $this->getFlat(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+        if (self::$db->rowCount() >= 1) {
+            return new Address(self::$db->lastInsertId(), $this->getCity(), $this->getCode(), $this->getStreet(), $this->getFlat());
+        }
+
+        return null;
     }
 
     public function update()
@@ -91,7 +97,12 @@ class Address implements Action
         self::$db->bind(':street', $this->getStreet(), PDO::PARAM_STR);
         self::$db->bind(':flat', $this->getFlat(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return $this;
+        }
+
+        return null;
     }
 
     public function delete()
@@ -99,7 +110,12 @@ class Address implements Action
         self::$db->query("DELETE FROM Address WHERE id=:id");
         self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return true;
+        }
+
+        return null;
     }
 
     public static function load($id = null)
@@ -107,7 +123,11 @@ class Address implements Action
         self::$db->query("SELECT * FROM Address WHERE id=:id");
         self::$db->bind(':id', $id, PDO::PARAM_INT);
         $row = self::$db->single();
-        return new Address($row['id'], $row['city'], $row['code'], $row['street'], $row['flat']);
+
+        if (self::$db->rowCount() >= 1) {
+            return new Address($row['id'], $row['city'], $row['code'], $row['street'], $row['flat']);
+        }
+        return null;
     }
 
     public static function loadAll()

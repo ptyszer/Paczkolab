@@ -90,11 +90,7 @@ class Size implements Action
     {
         self::$db->query("SELECT * FROM Size");
         $result = self::$db->resultSet();
-
-        if ($result) {
-            return $result;
-        }
-        return null;
+        return self::$db->resultSet();
     }
     public static function setDb(Database $db)
     {

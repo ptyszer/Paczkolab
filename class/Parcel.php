@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__.'/interface/Action.php';
+
 class Parcel implements Action
 {
     private $id;
@@ -84,7 +86,12 @@ class Parcel implements Action
         self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
         self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return new Parcel(self::$db->lastInsertId(), $this->getSender(), $this->getSize(), $this->getAddress());
+        }
+
+        return null;
     }
 
     public function update()
@@ -95,7 +102,12 @@ class Parcel implements Action
         self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
         self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return $this;
+        }
+
+        return null;
     }
 
     public function delete()
@@ -103,7 +115,11 @@ class Parcel implements Action
         self::$db->query("DELETE FROM Parcel WHERE id=:id");
         self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
         self::$db->execute();
-        return $this;
+
+        if (self::$db->rowCount() >= 1) {
+            return true;
+        }
+        return false;
     }
 
     public static function load($id = null)
@@ -111,7 +127,11 @@ class Parcel implements Action
         self::$db->query("SELECT * FROM Parcel WHERE id=:id");
         self::$db->bind(':id', $id, PDO::PARAM_INT);
         $row = self::$db->single();
-        return new Parcel($row['id'], $row['sender'], $row['size'], $row['address']);
+
+        if (self::$db->rowCount() >= 1) {
+            return new Parcel($row['id'], $row['sender_id'], $row['size_id'], $row['address_id']);
+        }
+        return null;
     }
 
     public static function loadAll()
