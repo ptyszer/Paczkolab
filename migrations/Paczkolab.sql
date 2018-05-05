@@ -140,15 +140,15 @@ ALTER TABLE `User`
 -- Ograniczenia dla tabeli `Parcel`
 --
 ALTER TABLE `Parcel`
-  ADD CONSTRAINT `Parcel_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`),
-  ADD CONSTRAINT `Parcel_Size_size_fkl` FOREIGN KEY (`size_id`) REFERENCES `Size` (`id`),
-  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `User` (`id`);
+  ADD CONSTRAINT `Parcel_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Parcel_Size_size_fkl` FOREIGN KEY (`size_id`) REFERENCES `Size` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `User` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `User`
 --
 ALTER TABLE `User`
-  ADD CONSTRAINT `User_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`);
+  ADD CONSTRAINT `User_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
