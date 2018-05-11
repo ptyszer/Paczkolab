@@ -81,8 +81,8 @@ class Parcel implements Action
 
     public function save()
     {
-        self::$db->query("INSERT INTO Parcel SET sender_id=:sender_id, size_id=:size_id, address_id=:address_id");
-        self::$db->bind(':sender_id', $this->getSender(), PDO::PARAM_INT);
+        self::$db->query("INSERT INTO Parcel SET user_id=:user_id, size_id=:size_id, address_id=:address_id");
+        self::$db->bind(':user_id', $this->getSender(), PDO::PARAM_INT);
         self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
         self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
         self::$db->execute();
@@ -96,9 +96,9 @@ class Parcel implements Action
 
     public function update()
     {
-        self::$db->query("UPDATE Parcel SET sender_id=:sender_id, size_id=:size_id, address_id=:address_id WHERE id=:id");
+        self::$db->query("UPDATE Parcel SET user_id=:user_id, size_id=:size_id, address_id=:address_id WHERE id=:id");
         self::$db->bind(':id', $this->getId(), PDO::PARAM_INT);
-        self::$db->bind(':sender_id', $this->getSender(), PDO::PARAM_INT);
+        self::$db->bind(':user_id', $this->getSender(), PDO::PARAM_INT);
         self::$db->bind(':size_id', $this->getSize(), PDO::PARAM_INT);
         self::$db->bind(':address_id', $this->getAddress(), PDO::PARAM_INT);
         self::$db->execute();
@@ -129,7 +129,7 @@ class Parcel implements Action
         $row = self::$db->single();
 
         if (self::$db->rowCount() >= 1) {
-            return new Parcel($row['id'], $row['sender_id'], $row['size_id'], $row['address_id']);
+            return new Parcel($row['id'], $row['user_id'], $row['size_id'], $row['address_id']);
         }
         return null;
     }

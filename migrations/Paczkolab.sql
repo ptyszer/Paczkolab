@@ -44,7 +44,7 @@ CREATE TABLE `Address` (
 
 CREATE TABLE `Parcel` (
   `id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `size_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -90,7 +90,7 @@ ALTER TABLE `Address`
 --
 ALTER TABLE `Parcel`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `Parcel_User_id_fk` (`sender_id`),
+  ADD KEY `Parcel_User_id_fk` (`user_id`),
   ADD KEY `Parcel_Size_size_fkl` (`size_id`),
   ADD KEY `Parcel_Address_id_fk` (`address_id`);
 
@@ -142,7 +142,7 @@ ALTER TABLE `User`
 ALTER TABLE `Parcel`
   ADD CONSTRAINT `Parcel_Address_id_fk` FOREIGN KEY (`address_id`) REFERENCES `Address` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `Parcel_Size_size_fkl` FOREIGN KEY (`size_id`) REFERENCES `Size` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`sender_id`) REFERENCES `User` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Parcel_User_id_fk` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE;
 
 --
 -- Ograniczenia dla tabeli `User`

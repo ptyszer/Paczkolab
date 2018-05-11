@@ -8,6 +8,6 @@
     <User id="1" name="Jan" surname="Kowalski" credits="200" address_id="2"/>
     <User id="2" name="Marian" surname="Nowak" credits="50" address_id="1"/>
     <User id="3" name="Janina" surname="Nowakowska" credits="500" address_id="3"/>
-    <Parcel id="1" sender_id="3" size_id="2" address_id="1"/>
-    <Parcel id="2" sender_id="1" size_id="2" address_id="2"/>
+    <Parcel id="1" user_id="3" size_id="2" address_id="1"/>
+    <Parcel id="2" user_id="1" size_id="2" address_id="2"/>
 </dataset>

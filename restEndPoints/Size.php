@@ -1,12 +1,19 @@
 <?php
 Size::setDb($db);
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $sizes = Size::loadAll();
     $tmpSizes = [];
-    foreach ($sizes as $k => $size) {
-        $tmpSizes[$k]['id'] = $size['id'];
-        $tmpSizes[$k]['size'] = $size['size'];
-        $tmpSizes[$k]['price'] = $size['price'];
+    if(!empty($pathId)){
+        $size = Size::load($pathId);
+        $tmpSizes[0]['id'] = $size->getId();
+        $tmpSizes[0]['size'] = $size->getSize();
+        $tmpSizes[0]['price'] = $size->getPrice();
+    } else {
+        $sizes = Size::loadAll();
+        foreach ($sizes as $k => $size) {
+            $tmpSizes[$k]['id'] = $size['id'];
+            $tmpSizes[$k]['size'] = $size['size'];
+            $tmpSizes[$k]['price'] = $size['price'];
+        }
     }
     $response = $tmpSizes;
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
