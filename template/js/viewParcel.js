@@ -129,7 +129,7 @@ $(document).ready(function() {
                 dataType: 'json'
             }).done(function (response) {
                 location.reload();
-                alert('Użytkownik został usunięty');
+                alert('Paczka została usunięta');
             }).fail(function (response) {
 
             });

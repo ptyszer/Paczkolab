@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__.'/../interface/Database.php';
+
 class DBmysql implements Database
 {
     /**
